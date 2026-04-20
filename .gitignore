@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/src/BuildingBlocks/BuildingBlocks/obj/Debug/net8.0
+/src/.vs
+/src/Services/Catalog/Catalog.API/obj/Debug/net8.0
+/src/BuildingBlocks/BuildingBlocks/bin/Debug/net8.0
+/src/BuildingBlocks/BuildingBlocks/obj
+/src/Services/Catalog/Catalog.API/obj
+/src/Services/Catalog/Catalog.API/bin/Debug/net8.0
+/src/Services/Catalog/Catalog.API/Catalog.API.csproj.user
