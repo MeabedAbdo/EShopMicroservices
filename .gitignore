@@ -10,3 +10,5 @@
 /src/Services/Catalog/Catalog.API/obj
 /src/Services/Catalog/Catalog.API/bin/Debug/net8.0
 /src/Services/Catalog/Catalog.API/Catalog.API.csproj.user
+/src/obj/Debug/docker-compose.dcproj.FileListAbsolute.txt
+/src/obj/Debug/docker-compose.dcproj.CoreCompileInputs.cache
