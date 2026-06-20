@@ -1,6 +1,5 @@
 ﻿
-using Catalog.API.Models;
-using Catalog.API.Products.CreateProduct;
+
 
 namespace Catalog.API.Products.GetProducts
 {
@@ -9,22 +8,19 @@ namespace Catalog.API.Products.GetProducts
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/products",
-             async (ISender sender) =>
-             {
+            app.MapGet("/products", async (ISender sender) =>
+            {
+                var result = await sender.Send(new GetProductsQuery());
 
-                 var result = await sender.Send(new GetProductsQuery());
+                var response = result.Adapt<GetProductsResponse>();
 
-                 var response = result.Adapt<GetProductsResponse>();
-
-                 return Results.Ok(response);
-
-             })
-             .WithName("GetProductList")
-             .Produces<GetProductsResponse>(StatusCodes.Status201Created)
+                return Results.Ok(response);
+            })
+             .WithName("GetProducts")
+             .Produces<GetProductsResponse>(StatusCodes.Status200OK)
              .ProducesProblem(StatusCodes.Status400BadRequest)
-             .WithSummary("Get Products List")
-             .WithDescription("Get Products List");
+             .WithSummary("Get Products")
+             .WithDescription("Get Products");
         }
     }
 }

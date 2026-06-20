@@ -1,7 +1,5 @@
-﻿using BuildingBlocks.CQRS;
-using Catalog.API.Models;
+﻿
 using Marten;
-using MediatR;
 
 namespace Catalog.API.Products.CreateProduct
 {
@@ -25,10 +23,10 @@ namespace Catalog.API.Products.CreateProduct
                 ImageFile = request.ImageFile,
                 Price = request.Price
             };
-            //ToDo
-            // Here you would typically save the product to a database or perform some other action.
+            //save product object to DB 
             session.Store(product);
             await session.SaveChangesAsync(cancellationToken);
+            // return result
             return new CreateProductResult(Guid.NewGuid()); // Simulate product creation and return a new Guid as Id
         }
     }

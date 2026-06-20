@@ -1,9 +1,53 @@
-version: '3.4'
-
 services:
- catalogdb:
-    image: postgres
-     
+
+  catalogdb:
+    image: postgres:17-alpine
+    networks:
+        pg_network:
+
+
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+ 
+   
+
+   
+  adminer:
+    image: adminer
+    depends_on: 
+         -  catalogdb
+    networks:
+       pg_network:
+
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    restart: unless-stopped
+    ports:
+      - "5341:80"
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_PASSWORD=123456
+      - SEQ_FIRSTRUN_ADMINUSERNAME=admin
+      
+    volumes:
+      - seq_data:/data
+
+secrets:
+  postgres_user:
+    file: ./Secrets/postgres_user.txt         
+  postgres_password:
+    file: ./Secrets/postgres_password.txt
+  postgres_db:
+    file: ./Secrets/catalogDb_name.txt
 
 volumes:
   postgres_catalog:
+  seq_data:
+
+networks:
+  pg_network:
+    driver: bridge

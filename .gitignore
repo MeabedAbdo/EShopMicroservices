@@ -334,3 +334,7 @@ ASALocalRun/
 .mfractor/
 /src/postgres_catalogDb
 /src/postgres_catalog
+Secrets/
+/src/catalogDb_name.txt
+/src/postgres_password.txt
+/src/postgres_user.txt
