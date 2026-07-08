@@ -12,7 +12,7 @@ namespace Catalog.API.Products.DeleteProduct
             RuleFor(x => x.ProductId).NotEmpty().WithMessage("Product ID is required");
         }
     }
-    public class DeleteProductCommandHandler(IDocumentSession _session, ILogger<DeleteProductCommandHandler> _logger) : ICommandHandler<DeleteProductCommand, DeleteProductResult>
+    public class DeleteProductCommandHandler(IDocumentSession _session) : ICommandHandler<DeleteProductCommand, DeleteProductResult>
     {
         public async Task<DeleteProductResult> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
