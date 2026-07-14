@@ -1,12 +1,15 @@
 
 
+using BuildingBlocks.Behaviors;
+using BuildingBlocks.Exceptions.Handlers;
+using Catalog.API.Data;
+using HealthChecks.UI.Client;
 using Marten;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
+using OptimumSolutions.Logging.Behaviors;
 using OptimumSolutions.Logging.Extensions;
 using OptimumSolutions.Logging.Models;
-using BuildingBlocks.Behaviors;
-using OptimumSolutions.Logging.Behaviors;
-using BuildingBlocks.Exceptions.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,9 +43,13 @@ builder.Services.AddMarten(options =>
     options.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
 
+if (builder.Environment.IsDevelopment())
+    builder.Services.InitializeMartenWith<CatalogInitialData>();
+
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
-
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 var app = builder.Build();
 
@@ -53,4 +60,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(); // Access via https://localhost:xxxx/swagger
 }
+app.UseHealthChecks("/health",
+    new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 app.Run();

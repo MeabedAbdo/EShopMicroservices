@@ -11,6 +11,8 @@ services:
     build:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
+      secrets:
+        - github_token
  
    
 
@@ -43,6 +45,9 @@ secrets:
     file: ./Secrets/postgres_password.txt
   postgres_db:
     file: ./Secrets/catalogDb_name.txt
+  github_token:
+    file: ./github_token.txt
+
 
 volumes:
   postgres_catalog:
