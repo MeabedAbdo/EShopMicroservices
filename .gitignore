@@ -338,9 +338,4 @@ Secrets/
 /src/catalogDb_name.txt
 /src/postgres_password.txt
 /src/postgres_user.txt
-/src/GitHubToken.txt
-/src/GitHubToken.txt
-/src/Services/Catalog/Catalog.API/GitHubToken.txt
-/src/GitHubToken.txt
-/src/github_token.txt
 /src/github_token.txt
