@@ -342,3 +342,4 @@ Secrets/
 /src/GitHubToken.txt
 /src/Services/Catalog/Catalog.API/GitHubToken.txt
 /src/GitHubToken.txt
+/src/github_token.txt

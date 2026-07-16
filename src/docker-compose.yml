@@ -13,9 +13,8 @@ services:
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
       secrets:
         - github_token
- 
-   
-
+    networks: 
+       pg_network:
    
   adminer:
     image: adminer
@@ -37,6 +36,7 @@ services:
       
     volumes:
       - seq_data:/data
+   
 
 secrets:
   postgres_user:
