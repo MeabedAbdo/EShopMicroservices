@@ -340,3 +340,4 @@ Secrets/
 /src/postgres_user.txt
 /src/github_token.txt
 /src/basketDb_name.txt
+/src/postgres_basketDb
