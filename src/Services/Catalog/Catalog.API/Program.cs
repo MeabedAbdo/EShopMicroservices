@@ -2,14 +2,14 @@
 
 using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handlers;
+using BuildingBlocks.Logging.Extensions;
+using BuildingBlocks.Logging.Models;
 using Catalog.API.Data;
 using HealthChecks.UI.Client;
 using Marten;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
-using OptimumSolutions.Logging.Behaviors;
-using OptimumSolutions.Logging.Extensions;
-using OptimumSolutions.Logging.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
