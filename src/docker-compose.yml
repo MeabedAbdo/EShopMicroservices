@@ -4,15 +4,30 @@ services:
     image: postgres:17-alpine
     networks:
         pg_network:
-
+  
+  basketdb:
+    image: postgres:17-alpine
+    networks:
+        pg_network:
+  distributedcache:
+    image: redis
+   
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
     build:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
-      secrets:
-        - github_token
+      
+    networks: 
+       pg_network:
+
+  basket.api:
+    image: ${DOCKER_REGISTRY-}basketapi
+    build:
+      context: .
+      dockerfile: Services/Basket/Basket.API/Dockerfile
+     
     networks: 
        pg_network:
    
@@ -43,14 +58,17 @@ secrets:
     file: ./Secrets/postgres_user.txt         
   postgres_password:
     file: ./Secrets/postgres_password.txt
-  postgres_db:
+  postgres_catalogdb:
     file: ./Secrets/catalogDb_name.txt
-  github_token:
-    file: ./github_token.txt
+  postgres_basketdb:
+    file: ./Secrets/basketDb_name.txt
+  # github_token:
+  #   file: ./github_token.txt
 
 
 volumes:
   postgres_catalog:
+  postgres_basket:
   seq_data:
 
 networks:

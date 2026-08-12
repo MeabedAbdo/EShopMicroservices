@@ -17,6 +17,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Secrets", "Secrets", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
+		basketDb_name.txt = basketDb_name.txt
 		catalogDb_name.txt = catalogDb_name.txt
 		github_token.txt = github_token.txt
 		postgres_password.txt = postgres_password.txt
@@ -24,6 +25,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Secrets", "Secrets", "{02EA
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eshop.Logging", "..\Eshop.Logging\Eshop.Logging.csproj", "{CB65D034-CF36-4C90-B778-FE50154947F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basket", "Basket", "{8EAADB22-6830-4255-8EB9-310C07FB90FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basket.API", "Services\Basket\Basket.API\Basket.API.csproj", "{DF8A0214-241E-4490-94B2-7BB5021F1792}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +52,10 @@ Global
 		{CB65D034-CF36-4C90-B778-FE50154947F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB65D034-CF36-4C90-B778-FE50154947F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB65D034-CF36-4C90-B778-FE50154947F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF8A0214-241E-4490-94B2-7BB5021F1792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF8A0214-241E-4490-94B2-7BB5021F1792}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF8A0214-241E-4490-94B2-7BB5021F1792}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF8A0214-241E-4490-94B2-7BB5021F1792}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +65,8 @@ Global
 		{A7811D3A-3725-42D4-B7BD-D75B44893C37} = {1547B509-ADC1-49D7-9E22-1963E54C4C32}
 		{690D8D25-FEC5-4D22-990A-6A28610D8B08} = {D63DBA1C-E43C-48D5-8A78-5DCBAD0899FD}
 		{CB65D034-CF36-4C90-B778-FE50154947F1} = {D63DBA1C-E43C-48D5-8A78-5DCBAD0899FD}
+		{8EAADB22-6830-4255-8EB9-310C07FB90FB} = {FBC1AF37-3A97-4B54-AFAF-4AF3AFE31130}
+		{DF8A0214-241E-4490-94B2-7BB5021F1792} = {8EAADB22-6830-4255-8EB9-310C07FB90FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {352A9C7E-29E7-4A1D-8117-364EA519761D}
