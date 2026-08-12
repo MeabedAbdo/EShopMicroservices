@@ -7,18 +7,46 @@ services:
         environment:
           POSTGRES_USER_FILE: /run/secrets/postgres_user         
           POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password 
-          POSTGRES_DB_FILE: /run/secrets/postgres_db
+          POSTGRES_DB_FILE: /run/secrets/postgres_catalogdb
 
         secrets:
           - postgres_user
           - postgres_password
-          - postgres_db
+          - postgres_catalogdb
         ports:
             - "5432:5432"
         volumes:
-          - postgres_catalog:/var/lib/postgresql/data/
           - ./postgres_catalogDb:/var/lib/postgresql/data/
+   
+    basketdb:
+        container_name: basketdb
+        restart: always
+         
+        environment:
+          POSTGRES_USER_FILE: /run/secrets/postgres_user         
+          POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password 
+          POSTGRES_DB_FILE: /run/secrets/postgres_basketdb
 
+        secrets:
+          - postgres_user
+          - postgres_password
+          - postgres_basketdb
+        ports:
+            - "5433:5432"
+        volumes:
+          - ./postgres_basketDb:/var/lib/postgresql/data/
+
+    adminer:
+         restart: always
+         ports:
+             - 8080:8080
+    
+    distributedcache:
+        container_name: distributedcache
+        restart: always
+        ports:
+            - "6379:6379"
+       
 
     catalog.api:
       environment:
@@ -34,11 +62,21 @@ services:
       volumes:
           - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
           - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-      secrets:
-          - github_token
-
-    adminer:
-         restart: always
-         ports:
-             - 8080:8080
+    
+    basket.api:
+      environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_HTTP_PORTS=8080
+          # - ASPNETCORE_HTTPS_PORTS=8081
+          - ConnectionStrings__Database=Host=basketdb;Port=5432;Database=BasketDb;Username=postgres;Password=postgres;Include Error Detail=true
+          - ConnectionStrings__Redis=distributedcache:6379 
+      depends_on:
+           - basketdb
+           - distributedcache
+      ports:
+          - "6001:8080"
+          # - "6061:8081"
+      volumes:
+          - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+          - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     
