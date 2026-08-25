@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Discount.Grpc.Protos;
+using FluentValidation;
 using JasperFx.Events.Daemon;
 
 namespace Basket.API.Basket.StoreBasket
@@ -13,15 +14,26 @@ namespace Basket.API.Basket.StoreBasket
             RuleFor(x => x.Cart.UserName).NotEmpty().WithMessage("UserName is Required");
         }
     }
-    public class StoreBasketCommandHandler(IBasketRepository basketRepository) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
+    public class StoreBasketCommandHandler(IBasketRepository basketRepository,DiscountProtoService.DiscountProtoServiceClient discountSrvcClient) : ICommandHandler<StoreBasketCommand, StoreBasketResult>
     {
         public async Task<StoreBasketResult> Handle(StoreBasketCommand request, CancellationToken cancellationToken)
         {
             //todo store basket in database Upsert(update if found /insert if not found )
             //todo update cache 
-            await basketRepository.StoreBasket(request.Cart, cancellationToken);
+            var cart = await DeductDiscount(request.Cart, cancellationToken);
+            await basketRepository.StoreBasket(cart, cancellationToken);
 
-            return new StoreBasketResult(request.Cart.UserName);
+            return new StoreBasketResult(cart.UserName);
+        }
+
+        private async Task<ShoppingCart> DeductDiscount(ShoppingCart cart, CancellationToken cancellationToken)
+        {
+            foreach (var item in cart.Items)
+            {
+                var coupon = await discountSrvcClient.GetDiscountAsync(new GetDiscountRequest { ProductName = item.ProductName }, cancellationToken: cancellationToken);
+                item.Price -= coupon.Amount;
+            }
+            return cart;
         }
     }
 }
