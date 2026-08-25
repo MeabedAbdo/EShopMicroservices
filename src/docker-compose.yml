@@ -9,8 +9,11 @@ services:
     image: postgres:17-alpine
     networks:
         pg_network:
+
   distributedcache:
     image: redis
+    networks:
+       cache_network:
    
 
   catalog.api:
@@ -30,7 +33,17 @@ services:
      
     networks: 
        pg_network:
+       cache_network:
+       discount_network:
    
+  discount.grpc:
+    image: ${DOCKER_REGISTRY-}discountgrpc
+    build:
+      context: .
+      dockerfile: Services/Discount/Discount.Grpc/Dockerfile
+    networks:
+          discount_network:
+####### Utilites #############
   adminer:
     image: adminer
     depends_on: 
@@ -51,7 +64,10 @@ services:
       
     volumes:
       - seq_data:/data
-   
+  
+  
+#############End Utilites##################
+ 
 
 secrets:
   postgres_user:
@@ -73,4 +89,8 @@ volumes:
 
 networks:
   pg_network:
+    driver: bridge
+  cache_network:
+    driver: bridge
+  discount_network:
     driver: bridge
