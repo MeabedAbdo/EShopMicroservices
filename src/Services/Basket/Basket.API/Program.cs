@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen(c =>
 //add logging 
 builder.Services.AddSharedLogging(new LoggingOptions
 {
-    ApplicationName = "Catalog.API",
+    ApplicationName = "Basket.API",
     EnableSeq = true,
     SeqURL = builder.Configuration["Serilog:SeqServerUrl"] ?? "http://localhost:5341",
     EnableConsole = true,
@@ -85,12 +85,10 @@ app.MapCarter();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-}
-if (app.Environment.IsDevelopment())
-{
     app.UseSwagger();
     app.UseSwaggerUI(); // Access via https://localhost:xxxx/swagger
 }
+
 app.UseExceptionHandler(opts => { });
 app.UseHealthChecks("/health",
     new HealthCheckOptions
