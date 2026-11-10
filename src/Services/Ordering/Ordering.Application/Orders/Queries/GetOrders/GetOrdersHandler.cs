@@ -17,7 +17,7 @@ namespace Ordering.Application.Orders.Queries.GetOrders
                                                 .Take(pageSize)
                                                 .OrderBy(o => o.OrderName.Value)
                                                 .ToListAsync();
-            return new GetOrdersQueryResult(new PaginatedResult<OrderDTO>( pageIndex, pageSize, totalCount, orders.MapToOrderDTO()));
+            return new GetOrdersQueryResult(new PaginatedResult<OrderDTO>( pageIndex, pageSize, totalCount, orders.MapToOrderDTOList()));
         }
     }
 }

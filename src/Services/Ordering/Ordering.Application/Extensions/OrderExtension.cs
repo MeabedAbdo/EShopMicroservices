@@ -8,11 +8,19 @@ namespace Ordering.Application.Extensions
 {
     public static class OrderExtension
     {
-        public static List<OrderDTO> MapToOrderDTO(this IEnumerable<Order> orders)
+        public static List<OrderDTO> MapToOrderDTOList(this IEnumerable<Order> orders)
         {
             if (orders is null) return new List<OrderDTO>();
 
-            return orders.Select(order => new OrderDTO(
+            return orders.Select(order => MapFromOrder(order)).ToList();
+        }
+        public static OrderDTO MapToOrderDTO(this Order order)
+        {
+            return MapFromOrder(order);
+        }
+        private static OrderDTO MapFromOrder(Order order)
+        {
+            return new OrderDTO(
                 order.Id.Value,
                 order.CustomerId.Value,
                 order.OrderName.Value,
@@ -44,7 +52,8 @@ namespace Ordering.Application.Extensions
                     i.ProductId.Value,
                     i.Quantity,
                     i.Price)).ToList()
-            )).ToList();
+            );
         }
+
     }
 }

@@ -56,6 +56,18 @@ services:
         ports:
            - "1435:1433"
 
+    messagebroker:
+        container_name: messagebroker
+        restart: always
+        hostname: ecommerce-mq
+        environment:
+          - RABBITMQ_DEFAULT_USER=guest
+          - RABBITMQ_DEFAULT_PASS=guest
+        ports:
+           - "15673:15672"
+           - "5673:5672"
+        volumes:
+           - rabbitmq_data:/var/lib/rabbitmq- 
 
     catalog.api:
       environment:
@@ -84,16 +96,42 @@ services:
           - ConnectionStrings__Database=Host=basketdb;Port=5432;Database=BasketDb;Username=postgres;Password=postgres;Include Error Detail=true
           - ConnectionStrings__Redis=distributedcache:6379 
           - GrpcSettings__DiscountUrl=https://discount.grpc:8081
+          - MessageBroker__Host=amqp://ecommerce-mq:5673
+          - MessageBroker__UserName=guest
+          - MessageBroker__Password=guest 
       depends_on:
            - basketdb
            - distributedcache
            - discount.grpc
+           - messagebroker 
       ports:
            - "6001:8080"
            - "6061:8081"
       volumes:
            - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
            - ${APPDATA}/ASP.NET/Https/EShop_WebApp_Cert:/home/app/.aspnet/https:ro
+
+    ordering.api:
+      environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_HTTP_PORTS=8080
+        - ASPNETCORE_HTTPS_PORTS=8081
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/Ordering.API.pfx
+        - ASPNETCORE_Kestrel__Certificates__Default__Password=123456 
+        - ConnectionStrings__Database=Server=orderdb;Database=OrderingDb;User Id=sa;Password=P@ssw0rd123;TrustServerCertificate=True
+        - MessageBroker__Host=amqp://ecommerce-mq:5673
+        - MessageBroker__UserName=guest
+        - MessageBroker__Password=guest 
+        - FeatureManagement_OrderFullfillment=false
+      ports:
+        - "6003:8080"
+        - "6063:8081"
+      volumes:
+        - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+        - ${APPDATA}/ASP.NET/Https/EShop_WebApp_Cert:/home/app/.aspnet/https:ro
+      depends_on:
+        - orderdb
+        - messagebroker
     
     discount.grpc:
       environment:
@@ -110,3 +148,5 @@ services:
         - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
         - ${APPDATA}/ASP.NET/Https/EShop_WebApp_Cert:/home/app/.aspnet/https:ro
 
+
+  

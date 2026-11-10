@@ -10,15 +10,23 @@ services:
     networks:
         pg_network:
 
+ 
+  
+  orderdb:
+    image: mcr.microsoft.com/mssql/server
+
   distributedcache:
     image: redis
     networks:
        cache_network:
    
-  
-  orderdb:
-    image: mcr.microsoft.com/mssql/server
 
+  messagebroker:
+    image: rabbitmq:management
+    networks:
+       discount_network:
+       pg_network:
+       messagebroker_network:
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
@@ -39,7 +47,17 @@ services:
        pg_network:
        cache_network:
        discount_network:
-   
+       messagebroker_network:
+
+  
+  ordering.api:
+    image: ${DOCKER_REGISTRY-}orderingapi
+    build:
+      context: .
+      dockerfile: Services/Ordering/Ordering.API/Dockerfile
+    networks:
+       messagebroker_network:
+
   discount.grpc:
     image: ${DOCKER_REGISTRY-}discountgrpc
     build:
@@ -73,6 +91,7 @@ services:
 #############End Utilites##################
  
 
+
 secrets:
   postgres_user:
     file: ./Secrets/postgres_user.txt         
@@ -90,6 +109,7 @@ volumes:
   postgres_catalog:
   postgres_basket:
   seq_data:
+  rabbitmq_data:
 
 networks:
   pg_network:
@@ -98,3 +118,7 @@ networks:
     driver: bridge
   discount_network:
     driver: bridge
+  messagebroker_network:
+    driver: bridge
+  
+
