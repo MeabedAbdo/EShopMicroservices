@@ -16,7 +16,7 @@ namespace Ordering.Application.Orders.Queries.GetOrdersByName
                                     .Where(o => o.OrderName.Value.Contains(query.Name))
                                     .OrderBy(o => o.OrderName.Value)
                                     .ToListAsync(cancellationToken);
-            List<OrderDTO> orderDTOs = orders.MapToOrderDTO();
+            List<OrderDTO> orderDTOs = orders.MapToOrderDTOList();
             return new GetOrdersByNameQueryResult(orderDTOs);
         }
 

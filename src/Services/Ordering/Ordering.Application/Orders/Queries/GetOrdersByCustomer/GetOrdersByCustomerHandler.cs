@@ -12,7 +12,7 @@ namespace Ordering.Application.Orders.Queries.GetOrdersByCustomer
                 .AsNoTracking().Where(o => o.CustomerId == CustomerId.Of(query.CustomerId))
                 .OrderBy(o => o.OrderName.Value)
                 .ToListAsync(cancellationToken);
-            return new GetOrdersByCustomerQueryResult(orders.MapToOrderDTO());
+            return new GetOrdersByCustomerQueryResult(orders.MapToOrderDTOList());
         }
     }
 }

@@ -1,7 +1,7 @@
-using Basket.API.Data;
 using BuildingBlocks.Exceptions.Handlers;
 using BuildingBlocks.Logging.Extensions;
 using BuildingBlocks.Logging.Models;
+using BuildingBlocks.Messaging.MassTransit;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi;
@@ -67,6 +67,7 @@ builder.Services.AddGrpcClient<Discount.Grpc.Protos.DiscountProtoService.Discoun
 
     return handler;
 });
+builder.Services.AddMessageBroker(builder.Configuration);
 
 //register cross cutting services 
 
