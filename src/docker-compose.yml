@@ -38,6 +38,7 @@ services:
       
     networks: 
        pg_network:
+       APIGateway-network:
 
   basket.api:
     image: ${DOCKER_REGISTRY-}basketapi
@@ -50,6 +51,7 @@ services:
        cache_network:
        discount_network:
        messagebroker_network:
+       APIGateway-network:
 
   
   ordering.api:
@@ -60,6 +62,7 @@ services:
     networks:
        messagebroker_network:
        sqldb-network:
+       APIGateway-network:
 
   discount.grpc:
     image: ${DOCKER_REGISTRY-}discountgrpc
@@ -68,6 +71,15 @@ services:
       dockerfile: Services/Discount/Discount.Grpc/Dockerfile
     networks:
           discount_network:
+
+  yarpapigateway:
+    image: ${DOCKER_REGISTRY-}yarpapigateway
+    build:
+      context: .
+      dockerfile: ApiGateways/YarpApiGateway/Dockerfile
+    networks:
+      APIGateway-network:
+
 ####### Utilites #############
   adminer:
     image: adminer
@@ -125,4 +137,5 @@ networks:
     driver: bridge
   sqldb-network:
     driver: bridge
-
+  APIGateway-network:
+    driver: bridge
